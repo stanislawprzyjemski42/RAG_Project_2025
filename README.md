@@ -2,7 +2,7 @@
 
 A powerful RAG (Retrieval-Augmented Generation) chatbot that processes, stores, and interacts with documents from Google Drive using Qdrant vector storage and Google's Gemini AI.
 
-## 🌟 Features
+## Features
 
 ### Document Processing & Storage
 - ✅ Retrieves documents from Google Drive folders
@@ -24,7 +24,7 @@ A powerful RAG (Retrieval-Augmented Generation) chatbot that processes, stores, 
 - ✅ Metadata-based hybrid search capabilities
 - ✅ Batch processing and progress tracking
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -201,7 +201,7 @@ The system automatically extracts structured metadata from documents:
 
 This metadata enables powerful hybrid search combining semantic similarity and keyword filtering.
 
-## 🔍 Advanced Features
+##  Advanced Features
 
 ### Hybrid Search
 
@@ -222,7 +222,7 @@ Uses a window buffer memory to maintain context:
 - Graceful degradation when services unavailable
 - Detailed error logging for debugging
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions are welcome! Please:
 
@@ -236,14 +236,14 @@ Contributions are welcome! Please:
 
 This project is licensed under the MIT License.
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - Built with [LangChain](https://langchain.com/)
 - Vector storage by [Qdrant](https://qdrant.tech/)
 - AI powered by [Google Gemini](https://deepmind.google/technologies/gemini/) and [OpenAI](https://openai.com/)
-- Based on n8n workflow architecture
+- Based on my first RAG Agent made in n8n.
 
-## 📧 Support
+## Support
 
 For issues and questions:
 - Open an issue on GitHub
