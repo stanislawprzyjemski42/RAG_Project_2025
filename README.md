@@ -46,28 +46,28 @@ This chatbot allows you to have natural conversations about your documents store
 
 ## Key Features
 
-### 📄 Document Processing
+###  Document Processing
 - Automatically retrieves documents from Google Drive folders
 - Supports PDF, DOCX, plain text, and Google Docs
 - Processes documents in configurable batches
 - Extracts structured metadata using AI
 - Splits long documents into manageable chunks
 
-### 💬 Intelligent Conversation
+###  Intelligent Conversation
 - Powered by Google Gemini 2.0 Flash
 - Maintains conversation context (40-message buffer)
 - Retrieves most relevant document sections
 - Provides source attribution
 - Handles follow-up questions naturally
 
-### 🗄️ Vector Storage
+###  Vector Storage
 - Fast similarity search with Qdrant
 - Hybrid search (semantic + keyword filtering)
 - Rich metadata for advanced filtering
 - Handles thousands of documents efficiently
 - Full CRUD operations support
 
-### ⚡ Smart Features
+###  Smart Features
 - Telegram notifications (optional)
 - Human-in-the-loop confirmations
 - Automatic chat history to Google Docs
@@ -99,7 +99,7 @@ Before you begin, you'll need:
 - ✅ Google Cloud Platform account (free tier works)
 - ✅ OpenAI API account with billing enabled
 - ✅ Qdrant instance (local Docker or cloud)
-- ⚪ Telegram bot (optional)
+- ⚪ Telegram bot (advised)
 
 ---
 
