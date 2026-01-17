@@ -1,268 +1,495 @@
 # RAG Chatbot with Google Drive Integration
 
-A powerful RAG (Retrieval-Augmented Generation) chatbot that processes, stores, and interacts with documents from Google Drive using Qdrant vector storage and Google's Gemini AI.
+> Transform your Google Drive documents into an intelligent conversational AI assistant
 
-## Features
+A production-ready Retrieval-Augmented Generation (RAG) chatbot built with LangChain, Google Gemini, and Qdrant vector database. Ask questions about your documents naturally and get accurate, context-aware answers.
 
-### Document Processing & Storage
-- ✅ Retrieves documents from Google Drive folders
-- ✅ Processes and splits documents into manageable chunks
-- ✅ Extracts metadata using AI for enhanced search capabilities
-- ✅ Stores document vectors in Qdrant for efficient retrieval
-- ✅ Supports batch processing with configurable chunk sizes
+---
 
-### Intelligent Chat Interface
-- ✅ Conversational interface powered by Google Gemini
-- ✅ RAG-based retrieval for context-aware responses
-- ✅ Maintains chat history in Google Docs
-- ✅ Memory management with configurable window buffer
-- ✅ Specialized agent for Nostr/Damus user profiles
+## 📖 Table of Contents
 
-### Vector Store Management
-- ✅ Secure delete operations with human verification via Telegram
-- ✅ Telegram notifications for important operations
-- ✅ Metadata-based hybrid search capabilities
-- ✅ Batch processing and progress tracking
+- [What This Does](#what-this-does)
+- [Key Features](#key-features)
+- [Technology Stack](#technology-stack)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [Troubleshooting](#troubleshooting)
+- [Security](#security)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Quick Start
+---
 
-### Prerequisites
+## What This Does
 
-- Python 3.9+
-- Qdrant vector database (local or cloud)
-- Google Cloud Platform account with APIs enabled
-- OpenAI API account
-- Telegram bot (optional, for notifications)
+This chatbot allows you to have natural conversations about your documents stored in Google Drive. Instead of manually searching through files, simply ask questions and get accurate answers based on the content of your documents. The system automatically processes your files, understands their content, and retrieves relevant information when you ask questions.
 
-### Installation
+**Example Use Cases:**
+- Ask questions about company documentation
+- Search through research papers conversationally
+- Query customer support documents
+- Analyze Nostr/Damus user profiles (default config)
+- Create a personal knowledge base
 
-1. **Clone the repository**
+---
+
+## Key Features
+
+### 📄 Document Processing
+- Automatically retrieves documents from Google Drive folders
+- Supports PDF, DOCX, plain text, and Google Docs
+- Processes documents in configurable batches
+- Extracts structured metadata using AI
+- Splits long documents into manageable chunks
+
+### 💬 Intelligent Conversation
+- Powered by Google Gemini 2.0 Flash
+- Maintains conversation context (40-message buffer)
+- Retrieves most relevant document sections
+- Provides source attribution
+- Handles follow-up questions naturally
+
+### 🗄️ Vector Storage
+- Fast similarity search with Qdrant
+- Hybrid search (semantic + keyword filtering)
+- Rich metadata for advanced filtering
+- Handles thousands of documents efficiently
+- Full CRUD operations support
+
+### ⚡ Smart Features
+- Telegram notifications (optional)
+- Human-in-the-loop confirmations
+- Automatic chat history to Google Docs
+- Error handling with retries
+- Progress tracking
+
+---
+
+## Technology Stack
+
+| Component | Technology | Purpose |
+|-----------|-----------|---------|
+| **Language** | Python 3.9+ | Core application |
+| **Framework** | LangChain | AI orchestration |
+| **LLM** | Google Gemini 2.0 | Natural language understanding |
+| **Embeddings** | OpenAI text-embedding-3-large | Document vectorization (3072 dims) |
+| **Vector DB** | Qdrant | Similarity search |
+| **Storage** | Google Drive | Document repository |
+| **History** | Google Docs | Conversation logs |
+| **Notifications** | Telegram Bot API | Alerts (optional) |
+
+---
+
+## Requirements
+
+Before you begin, you'll need:
+
+- ✅ Python 3.9 or newer
+- ✅ Google Cloud Platform account (free tier works)
+- ✅ OpenAI API account with billing enabled
+- ✅ Qdrant instance (local Docker or cloud)
+- ⚪ Telegram bot (optional)
+
+---
+
+## Installation
+
+### Step 1: Get the Code
+
 ```bash
-git clone <repository-url>
+git clone https://github.com/yourusername/rag-chatbot.git
 cd rag-chatbot
 ```
 
-2. **Create virtual environment**
+### Step 2: Python Environment
+
 ```bash
+# Create virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Activate (choose your platform)
+source venv/bin/activate  # macOS/Linux
+venv\Scripts\activate     # Windows
 ```
 
-3. **Install dependencies**
+### Step 3: Install Dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
 
-4. **Set up Google Cloud credentials**
-   - Go to [Google Cloud Console](https://console.cloud.google.com/)
-   - Create a new project or select existing one
-   - Enable the following APIs:
-     - Google Drive API
-     - Google Docs API
-   - Create OAuth 2.0 credentials
-   - Download credentials as `credentials.json` and place in project root
+### Step 4: Google Cloud Setup
 
-5. **Set up Qdrant**
-   
-   **Option A: Local Docker**
-   ```bash
-   docker run -p 6333:6333 qdrant/qdrant
-   ```
-   
-   **Option B: Qdrant Cloud**
-   - Sign up at [cloud.qdrant.io](https://cloud.qdrant.io/)
-   - Create a cluster and get your API key
+**Enable APIs:**
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create/select a project
+3. Enable **Google Drive API** and **Google Docs API**
 
-6. **Configure environment variables**
+**Create OAuth Credentials:**
+1. Navigate to "APIs & Services" → "Credentials"
+2. Click "Create Credentials" → "OAuth client ID"
+3. Choose "Desktop app"
+4. Download JSON file
+5. Rename to `credentials.json`
+6. Place in project root
+
+> ⚠️ Never commit `credentials.json` to version control
+
+### Step 5: Qdrant Setup
+
+**Option A - Docker (Recommended):**
 ```bash
-cp .env.example .env
-# Edit .env with your API keys and configuration
+docker run -p 6333:6333 -p 6334:6334 \
+    -v $(pwd)/qdrant_storage:/qdrant/storage \
+    qdrant/qdrant
 ```
 
-7. **Set up Telegram bot (optional)**
-   - Chat with [@BotFather](https://t.me/botfather) on Telegram
-   - Create a new bot and get the token
-   - Get your chat ID by messaging [@userinfobot](https://t.me/userinfobot)
-   - Add to `.env` file
+**Option B - Qdrant Cloud:**
+1. Sign up at [cloud.qdrant.io](https://cloud.qdrant.io/)
+2. Create a cluster
+3. Note your URL and API key
 
-## 📖 Usage
+### Step 6: Get API Keys
 
-### Process Documents from Google Drive
+**OpenAI API Key:**
+- Visit [platform.openai.com](https://platform.openai.com/)
+- Create API key in your account settings
 
-```python
-import asyncio
-from main import RAGChatbot
+**Google Gemini API Key:**
+- Visit [ai.google.dev](https://ai.google.dev/)
+- Click "Get API key"
 
-async def main():
-    chatbot = RAGChatbot()
-    
-    # Process all documents in the configured folder
-    await chatbot.process_documents(batch_size=5)
+**Telegram Bot (Optional):**
+- Message @BotFather on Telegram
+- Send `/newbot` and follow prompts
+- Get your chat ID from @userinfobot
 
-asyncio.run(main())
+### Step 7: Environment Configuration
+
+Create `.env` file in project root:
+
+```bash
+# OpenAI
+OPENAI_API_KEY=sk-your-key-here
+
+# Google Gemini
+GOOGLE_API_KEY=your-key-here
+
+# Qdrant
+QDRANT_URL=http://localhost:6333
+QDRANT_API_KEY=
+QDRANT_COLLECTION_NAME=my-documents
+
+# Google Drive (get ID from folder URL)
+GOOGLE_DRIVE_FOLDER_ID=your-folder-id
+
+# Google Docs (get ID from document URL)
+GOOGLE_DOCS_HISTORY_ID=your-doc-id
+
+# Telegram (optional)
+TELEGRAM_BOT_TOKEN=your-token
+TELEGRAM_CHAT_ID=your-chat-id
 ```
 
-### Run Interactive Chat
+**Finding IDs:**
+- **Folder ID:** From `https://drive.google.com/drive/folders/FOLDER_ID` 
+- **Doc ID:** From `https://docs.google.com/document/d/DOC_ID/edit`
+
+### Step 8: First Run
 
 ```bash
 python main.py
 ```
 
-The chat interface will start and you can:
-- Ask questions about the documents
-- Type `clear` to reset conversation memory
-- Type `quit` or `exit` to end the session
+A browser will open for Google authorization (one-time only).
 
-### Delete Documents from Vector Store
+---
 
-```python
-import asyncio
-from main import RAGChatbot
+## Configuration
 
-async def main():
-    chatbot = RAGChatbot()
-    
-    # Delete specific documents by file IDs
-    file_ids = ["file_id_1", "file_id_2"]
-    await chatbot.delete_documents_by_file_ids(file_ids)
+### Adjusting Parameters
 
-asyncio.run(main())
-```
-
-## 🔧 Configuration
-
-### Environment Variables
-
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `OPENAI_API_KEY` | OpenAI API key for embeddings | Yes |
-| `GOOGLE_API_KEY` | Google API key for Gemini | Yes |
-| `QDRANT_URL` | Qdrant instance URL | Yes |
-| `QDRANT_API_KEY` | Qdrant API key (if cloud) | No |
-| `QDRANT_COLLECTION_NAME` | Vector store collection name | Yes |
-| `GOOGLE_DRIVE_FOLDER_ID` | Google Drive folder ID | Yes |
-| `GOOGLE_DOCS_HISTORY_ID` | Google Docs ID for chat history | Yes |
-| `TELEGRAM_BOT_TOKEN` | Telegram bot token | No |
-| `TELEGRAM_CHAT_ID` | Telegram chat ID | No |
-
-### Document Processing Configuration
-
-In `main.py`, adjust these parameters:
+Edit `main.py` to customize:
 
 ```python
-# Chunk size for text splitting
-chunk_size = 3000
-chunk_overlap = 200
+# Text processing
+chunk_size = 3000          # Characters per chunk
+chunk_overlap = 200        # Overlap between chunks
 
-# Batch processing size
-batch_size = 5
+# Retrieval
+retrieval_k = 20           # Documents to retrieve per query
 
-# Memory window size (number of messages)
-memory_window = 40
+# Memory
+memory_window = 40         # Conversation turns to remember
 
-# Number of documents to retrieve
-retrieval_k = 20
+# Batch processing
+batch_size = 5             # Files to process at once
 ```
 
-## 📁 Project Structure
+### Changing Models
+
+```python
+# Language model
+self.llm = ChatGoogleGenerativeAI(
+    model="gemini-2.0-flash-exp",  # or "gemini-1.5-pro"
+    max_output_tokens=8192,
+    temperature=0.4
+)
+
+# Embeddings
+self.embeddings = OpenAIEmbeddings(
+    model="text-embedding-3-large"  # or "text-embedding-3-small"
+)
+```
+
+### Custom Metadata
+
+Edit `document_processor.py` to extract custom fields:
+
+```python
+ResponseSchema(
+    name="your_field",
+    description="What to extract",
+    type="string"  # or "list"
+)
+```
+
+---
+
+## Usage
+
+### Processing Documents
+
+To load documents from Google Drive, uncomment in `main.py`:
+
+```python
+await chatbot.process_documents()
+```
+
+Then run:
+```bash
+python main.py
+```
+
+The system will download, process, and store all documents from your configured folder.
+
+### Interactive Chat
+
+Run the chatbot:
+
+```bash
+python main.py
+```
+
+You'll see:
+
+```
+============================================================
+RAG Chatbot - Document Assistant
+============================================================
+Type 'quit' or 'exit' to end conversation
+Type 'clear' to reset memory
+============================================================
+
+You: 
+```
+
+**Commands:**
+- Type any question about your documents
+- `clear` - Reset conversation memory
+- `quit` or `exit` - Close chatbot
+
+**Example:**
+```
+You: What are the main topics in the documents?
+Assistant: Based on the documents, the main topics are...
+
+You: Tell me more about the first topic
+Assistant: [Provides detailed context-aware response]
+```
+
+### Deleting Documents
+
+To remove documents from the vector store:
+
+```python
+file_ids = ["file_id_1", "file_id_2"]
+await chatbot.delete_documents_by_file_ids(file_ids)
+```
+
+If Telegram is configured, you'll receive a confirmation request.
+
+---
+
+## Project Structure
 
 ```
 rag-chatbot/
-├── main.py                    # Main application
-├── google_drive_handler.py    # Google Drive operations
-├── document_processor.py      # Document processing and metadata extraction
-├── telegram_notifier.py       # Telegram notifications
-├── chat_history_manager.py    # Google Docs chat history
-├── requirements.txt           # Python dependencies
-├── .env.example              # Environment variables template
-├── credentials.json          # Google OAuth credentials (not in repo)
-├── token.json               # Generated OAuth token (not in repo)
-└── README.md                # This file
+├── main.py                      # Main application
+├── google_drive_handler.py      # Drive operations
+├── document_processor.py        # Processing & metadata
+├── telegram_notifier.py         # Notifications
+├── chat_history_manager.py      # History management
+├── requirements.txt             # Dependencies
+├── .env.example                 # Config template
+├── .gitignore                   # Git exclusions
+└── README.md                    # This file
 ```
 
-## 🔒 Security Notes
+**Not in repo (gitignored):**
+- `credentials.json` - Google OAuth credentials
+- `token.json` - Google OAuth token
+- `.env` - Your configuration
 
-- Never commit `credentials.json`, `token.json`, or `.env` files
-- Store API keys securely using environment variables
-- Use service accounts for production deployments
-- Implement proper access controls for Google Drive folders
-- Enable Telegram bot security features if using notifications
+---
 
-## 🛠️ Metadata Extraction
+## Troubleshooting
 
-The system automatically extracts structured metadata from documents:
+### Authentication
 
-- **Overarching Theme**: Main topics discussed
-- **Recurring Topics**: Common threads across content
-- **Pain Points**: User frustrations or challenges
-- **Analytical Insights**: Key observations and patterns
-- **Conclusion**: Summary of findings
-- **Keywords**: 10 key terms for hybrid search
+**Browser doesn't open:**
+- Manually visit the URL shown in terminal
+- Complete authorization and paste code back
 
-This metadata enables powerful hybrid search combining semantic similarity and keyword filtering.
+**Invalid credentials:**
+- Delete `token.json` and retry
+- Verify `credentials.json` is correct
+- Check APIs are enabled in Google Cloud
 
-##  Advanced Features
+### API Issues
 
-### Hybrid Search
+**OpenAI key not working:**
+- Verify key in `.env`
+- Check billing is set up
+- Ensure sufficient credits
 
-The Qdrant vector store supports hybrid search combining:
-- Semantic similarity (vector search)
-- Keyword filtering (metadata search)
+**Rate limits:**
+- Reduce `batch_size`
+- Add delays between calls
+- Upgrade API plan
 
-### Conversation Memory
+### Qdrant
 
-Uses a window buffer memory to maintain context:
-- Stores last 40 messages by default
-- Can be cleared with `clear` command
-- Persists across chat session
+**Cannot connect:**
+- Check Docker is running: `docker ps`
+- Verify URL in `.env`
+- For cloud, check API key
 
-### Error Handling
+**Collection errors:**
+- Collection is auto-created
+- Delete and recreate if needed
 
-- Automatic retry logic for API calls
-- Graceful degradation when services unavailable
-- Detailed error logging for debugging
+### Processing
 
-##  Contributing
+**Documents not processing:**
+- Verify Google Drive folder ID
+- Check folder access permissions
+- Ensure supported formats (PDF, DOCX, TXT, Google Docs)
 
-Contributions are welcome! Please:
+**Metadata extraction fails:**
+- Check Gemini API key and quota
+- Reduce `chunk_size` for long documents
+- Review console error messages
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+**Memory issues:**
+- Reduce `batch_size`
+- Reduce `chunk_size`
+- Process in multiple sessions
 
-## 📝 License
+---
 
-This project is licensed under the MIT License.
+## Security
 
-##  Acknowledgments
+### Critical Files (Never Commit)
 
-- Built with [LangChain](https://langchain.com/)
-- Vector storage by [Qdrant](https://qdrant.tech/)
-- AI powered by [Google Gemini](https://deepmind.google/technologies/gemini/) and [OpenAI](https://openai.com/)
-- Based on my first RAG Agent made in n8n.
+- `credentials.json` - Google OAuth credentials
+- `token.json` - Google OAuth token
+- `.env` - API keys and configuration
+- Any files with secrets
+
+All these are in `.gitignore` by default.
+
+### API Key Safety
+
+- Store only in `.env` file
+- Don't share in messages/screenshots
+- Rotate keys regularly
+- Use environment variables in production
+
+### Google Permissions
+
+- App requests read-only Drive access
+- Review/revoke at [myaccount.google.com/permissions](https://myaccount.google.com/permissions)
+
+### Data Flow
+
+| Service | Data Sent | Purpose |
+|---------|-----------|---------|
+| OpenAI | Document text | Create embeddings |
+| Google Gemini | Documents & questions | Metadata extraction & chat |
+| Google Drive/Docs | Read/write operations | Documents & history |
+| Telegram | Notifications | Alerts (optional) |
+| Qdrant | Embeddings & metadata | Vector storage |
+
+---
+
+## Contributing
+
+Contributions welcome! Here's how:
+
+### Reporting Bugs
+
+Open an issue with:
+- Clear description
+- Steps to reproduce
+- Python version & OS
+- Error messages/logs
+
+### Suggesting Features
+
+Open an issue describing:
+- Problem it solves
+- How it would work
+- Why it's useful
+
+### Code Contributions
+
+1. Fork repository
+2. Create feature branch
+3. Make changes
+4. Test thoroughly
+5. Submit pull request
+
+---
+
+## License
+
+MIT License - see LICENSE file for details.
+
+---
+
+## Acknowledgments
+
+Built with:
+- [LangChain](https://langchain.com/) - LLM framework
+- [Qdrant](https://qdrant.tech/) - Vector search
+- [Google Gemini](https://ai.google.dev/) - AI model
+- [OpenAI](https://openai.com/) - Embeddings
+
+Inspired by n8n workflow architecture.
+
+---
 
 ## Support
 
-For issues and questions:
-- Open an issue on GitHub
-- Check existing documentation
-- Review error logs
+Need help?
+- Check Troubleshooting section
+- Search GitHub Issues
+- Open new Issue with details
 
-## 🔄 Workflow Comparison
+---
 
-This Python implementation replicates the n8n workflow with the following mappings:
-
-| n8n Node | Python Component |
-|----------|------------------|
-| Google Drive nodes | `GoogleDriveHandler` |
-| Document processing | `DocumentProcessor` |
-| Qdrant Vector Store | `QdrantClient` + LangChain |
-| Gemini Chat Model | `ChatGoogleGenerativeAI` |
-| OpenAI Embeddings | `OpenAIEmbeddings` |
-| Telegram nodes | `TelegramNotifier` |
-| Google Docs | `ChatHistoryManager` |
-| AI Agent | LangChain Agent + Memory |
-| Loop Over Items | Python async batch processing |
-| Human Verification | Telegram confirmation flow |
+**v1.0.0** | Built with ❤️ for the AI community
