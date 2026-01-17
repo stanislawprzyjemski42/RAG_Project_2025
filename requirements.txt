@@ -1,0 +1,27 @@
+# Core dependencies
+python-dotenv==1.0.0
+
+# LangChain and AI
+langchain==0.1.0
+langchain-google-genai==0.0.6
+langchain-openai==0.0.5
+langchain-community==0.0.13
+
+# Vector Store
+qdrant-client==1.7.0
+
+# Google APIs
+google-api-python-client==2.110.0
+google-auth-httplib2==0.2.0
+google-auth-oauthlib==1.2.0
+google-auth==2.25.2
+
+# Telegram
+python-telegram-bot==20.7
+
+# Document Processing
+PyPDF2==3.0.1
+python-docx==1.1.0
+
+# Utilities
+tiktoken==0.5.2
