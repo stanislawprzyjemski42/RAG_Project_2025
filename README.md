@@ -1,6 +1,6 @@
 # RAG Chatbot with Google Drive Integration
 
-> Transform your Google Drive documents into an intelligent conversational AI assistant
+> Transform your Google Drive documents into an intelligent conversational AI assistant.
 
 A production-ready Retrieval-Augmented Generation (RAG) chatbot built with LangChain, Google Gemini, and Qdrant vector database. Ask questions about your documents naturally and get accurate, context-aware answers.
 
