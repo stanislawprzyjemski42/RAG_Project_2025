@@ -1,4 +1,4 @@
-# 🤖 RAG Chatbot with Google Drive Integration
+# RAG Chatbot with Google Drive Integration
 
 A powerful RAG (Retrieval-Augmented Generation) chatbot that processes, stores, and interacts with documents from Google Drive using Qdrant vector storage and Google's Gemini AI.
 
