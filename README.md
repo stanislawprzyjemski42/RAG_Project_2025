@@ -2,9 +2,9 @@
 
 ## What This System Does
 
-This system enables natural language querying over large document collections stored in Google Drive. Documents are automatically ingested, chunked, embedded, and indexed in a **Qdrant vector database** to enable efficient semantic retrieval.
+- This system enables natural language querying over large document collections stored in Google Drive. Documents are automatically ingested, chunked, embedded, and indexed in a **Qdrant vector database** to enable efficient semantic retrieval.
 
-At query time, the system retrieves the most relevant document segments using vector similarity and provides them as grounded context for response generation. When applied to large collections of legal documents, it significantly reduced search time compared to manual multi-document review.
+- At query time, the system retrieves the most relevant document segments using vector similarity and provides them as grounded context for response generation. When applied to large collections of legal documents, it significantly reduced search time compared to manual multi-document review.
 
 **Key capabilities:**
 - Semantic retrieval over heterogeneous document formats  
