@@ -479,7 +479,7 @@ Built with:
 - [Google Gemini](https://ai.google.dev/) - AI model
 - [OpenAI](https://openai.com/) - Embeddings
 
-Inspired by n8n workflow architecture.
+Inspired by my first RAG Agent in a low code tool called n8n.
 
 ---
 
@@ -491,5 +491,3 @@ Need help?
 - Open new Issue with details
 
 ---
-
-**v1.0.0** | Built with ❤️ for the AI community
