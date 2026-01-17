@@ -486,8 +486,10 @@ Built with:
 - [Qdrant](https://qdrant.tech/) - Vector search
 - [Google Gemini](https://ai.google.dev/) - AI model
 - [OpenAI](https://openai.com/) - Embeddings
-
-Inspired by my first RAG Agent in a low code tool called n8n.
+- Debugged with GitHub Copilot in VS Code.
+- Used these tutorials from youtube: 
+Learn RAG From Scratch – Python AI Tutorial from a LangChain Engineer:  https://www.youtube.com/watch?v=sVcwVQRHIc8
+Langchain RAG Course: From Basics to Production-Ready RAG Chatbot: https://www.youtube.com/watch?v=38aMTXY2usU&list=PLAMHV77MSKJ7Pn_OwuGzbDPs_MOibBRP
 
 ---
 
