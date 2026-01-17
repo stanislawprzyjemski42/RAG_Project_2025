@@ -2,8 +2,23 @@
 
 > Transform your Google Drive documents into an intelligent conversational AI assistant.
 
-A production-ready Retrieval-Augmented Generation (RAG) chatbot built with LangChain, Google Gemini, and Qdrant vector database. Ask questions about your documents naturally and get accurate, context-aware answers.
+What This System Does
 
+This system enables natural language querying over large document collections stored in Google Drive, eliminating manual keyword-based search. Documents are automatically ingested, chunked, embedded, and indexed in a Qdrant vector database to support efficient semantic retrieval.
+
+At query time, the system retrieves the most semantically relevant document segments using vector similarity and supplies them as grounded context for response generation. The system was applied to large collections of legal documents, where it significantly reduced search time by allowing users to locate relevant clauses and references in seconds rather than manual multi-document review.
+
+Key capabilities include:
+
+Semantic retrieval over heterogeneous document formats
+
+Context-aware, multi-turn conversations with bounded memory
+
+Source-grounded answers with metadata attribution
+
+Incremental document updates without full reindexing
+
+The result is a practical document intelligence system suitable for legal documentation, knowledge management, research workflows, and internal information retrieval at scale.
 ---
 
 ## 📖 Table of Contents
